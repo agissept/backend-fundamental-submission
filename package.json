@@ -1,0 +1,21 @@
+{
+  "name": "open-music-api-submission",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "license": "MIT",
+  "scripts": {
+    "start-prod": "NODE_ENV=production NODE_PATH=./ ts-node src/index.ts",
+    "start-dev": "nodemon",
+    "lint": "eslint . --ext .ts"
+  },
+  "dependencies": {
+    "@hapi/hapi": "^20.1.5",
+    "@types/hapi__hapi": "^20.0.9",
+    "nano-id": "^1.1.0",
+    "ts-node": "^10.1.0",
+    "typescript": "^4.3.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
+}
