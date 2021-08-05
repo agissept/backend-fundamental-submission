@@ -1,4 +1,6 @@
 import Hapi from '@hapi/hapi'
+import songs from './api/songs'
+import SongsService from './services/SongsService'
 
 const init = async () => {
     const server = Hapi.server({
@@ -8,6 +10,14 @@ const init = async () => {
             cors: {
                 origin: ['*']
             }
+        }
+    })
+
+    await server.register({
+        plugin: songs,
+        options: {
+            service: new SongsService(),
+            validator: {}
         }
     })
 
