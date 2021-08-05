@@ -1,18 +1,17 @@
-import {HandlerDecorations, Lifecycle, Request, ResponseToolkit} from "@hapi/hapi";
+import {Request, ResponseToolkit} from "@hapi/hapi";
 import SongsService from "../../services/SongsService";
-import Method = Lifecycle.Method;
 import SongRequest from "../../model/request/SongRequest";
 
 class SongsHandler {
     private service
     private validator;
-    static addSongHandler: Method | HandlerDecorations | undefined;
 
     constructor(service: SongsService, validator: any) {
         this.service = service
         this.validator = validator
 
         this.addSongHandler = this.addSongHandler.bind(this)
+        this.getAllSongsHandler = this.getAllSongsHandler.bind(this)
     }
 
     public async addSongHandler(request: Request, h: ResponseToolkit) {
@@ -29,6 +28,20 @@ class SongsHandler {
         });
         response.code(201);
         return response;
+    }
+
+    public async getAllSongsHandler() {
+        const songs = this.service.getAllSongs()
+        return {
+            'status': 'success',
+            data: {
+                songs: songs.map(song => ({
+                    id: song.id,
+                    title: song.title,
+                    performer: song.performer
+                }))
+            }
+        }
     }
 
 }

@@ -7,11 +7,11 @@ const routes = (handler: SongsHandler): Array<ServerRoute> => [
         path: '/songs',
         handler: handler.addSongHandler,
     },
-    // {
-    //     method: 'GET',
-    //     path: '/songs',
-    //     handler: handler.getNotesHandler,
-    // },
+    {
+        method: 'GET',
+        path: '/songs',
+        handler: handler.getAllSongsHandler,
+    },
     // {
     //     method: 'GET',
     //     path: '/songs/{id}',
