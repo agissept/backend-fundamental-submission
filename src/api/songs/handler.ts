@@ -1,12 +1,13 @@
 import {Request, ResponseToolkit} from "@hapi/hapi";
 import SongsService from "../../services/SongsService";
 import SongRequest from "../../model/request/SongRequest";
+import SongsValidator from "../../validator/songs";
 
 class SongsHandler {
     private service
     private validator;
 
-    constructor(service: SongsService, validator: any) {
+    constructor(service: SongsService, validator: SongsValidator) {
         this.service = service
         this.validator = validator
 
@@ -19,6 +20,7 @@ class SongsHandler {
 
     public async addSongHandler(request: Request, h: ResponseToolkit) {
         const {payload} = request
+        this.validator.validateNotePayload(payload as SongRequest)
 
         const songId = this.service.addSong(payload as SongRequest)
 
