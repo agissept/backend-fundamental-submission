@@ -1,6 +1,7 @@
 import {nanoid} from "nanoid";
 import SongRequest from "../model/request/SongRequest"
 import DetailSong from "../model/DetailSong";
+import NotFoundError from "../exception/NotFoundError";
 
 class SongsService {
     private songs: Array<DetailSong> = []
@@ -30,6 +31,10 @@ class SongsService {
 
     editSong(songId: string, payload: SongRequest) {
         const songIndex = this.songs.findIndex(song => song.id === songId)
+
+        if(songIndex < 0){
+            throw new NotFoundError('Song not updated, id is not found')
+        }
 
         this.songs[songIndex] =  {
             ...this.songs[songIndex],

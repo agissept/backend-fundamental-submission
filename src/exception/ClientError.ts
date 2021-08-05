@@ -1,5 +1,5 @@
 class ClientError extends Error {
-    private statusCode: number;
+    statusCode: number;
 
     constructor(message: string, statusCode = 400) {
         super(message);

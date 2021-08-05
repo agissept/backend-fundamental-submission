@@ -2,6 +2,7 @@ import {Request, ResponseToolkit} from "@hapi/hapi";
 import SongsService from "../../services/SongsService";
 import SongRequest from "../../model/request/SongRequest";
 import SongsValidator from "../../validator/songs";
+import ClientError from "../../exception/ClientError";
 
 class SongsHandler {
     private service
@@ -72,12 +73,32 @@ class SongsHandler {
         }
     }
 
-    public async putSongHandler(request: Request) {
+    public async putSongHandler(request: Request, h: ResponseToolkit) {
         const {id} = request.params
-        this.service.editSong(id, request.payload as SongRequest)
-        return {
-            'status': 'success',
-            'message': 'Song is updated'
+
+        try {
+            this.validator.validateNotePayload(request.payload as SongRequest)
+
+            this.service.editSong(id, request.payload as SongRequest)
+
+            return {
+                'status': 'success',
+                'message': 'Song updated'
+            }
+        } catch (error) {
+            if (error instanceof ClientError) {
+                console.log(error)
+
+                return h.response({
+                    'status': 'fail',
+                    'message': `${error} : ${error.message}`
+                }).code(error.statusCode)
+            }
+
+            return h.response({
+                'status': 'fail',
+                'message': 'Server Error'
+            }).code(500)
         }
     }
 
