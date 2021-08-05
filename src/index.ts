@@ -1,6 +1,7 @@
 import Hapi from '@hapi/hapi'
 import songs from './api/songs'
 import SongsService from './services/SongsService'
+import SongsValidator from "./validator/songs";
 
 const init = async () => {
     const server = Hapi.server({
@@ -17,7 +18,7 @@ const init = async () => {
         plugin: songs,
         options: {
             service: new SongsService(),
-            validator: {}
+            validator: new SongsValidator()
         }
     })
 
