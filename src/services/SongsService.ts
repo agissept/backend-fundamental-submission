@@ -20,8 +20,12 @@ class SongsService {
         return songId
     }
 
-    getAllSongs(){
+    getAllSongs() {
         return this.songs
+    }
+
+    getSongById(songId: string): DetailSong | undefined {
+        return this.songs.find(song => song.id === songId)
     }
 }
 

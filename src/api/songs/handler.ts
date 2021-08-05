@@ -12,6 +12,7 @@ class SongsHandler {
 
         this.addSongHandler = this.addSongHandler.bind(this)
         this.getAllSongsHandler = this.getAllSongsHandler.bind(this)
+        this.getSongByIdHandler = this.getSongByIdHandler.bind(this)
     }
 
     public async addSongHandler(request: Request, h: ResponseToolkit) {
@@ -44,6 +45,15 @@ class SongsHandler {
         }
     }
 
+    public async getSongByIdHandler(request: Request) {
+        const {id} = request.params
+        const song = this.service.getSongById(id)
+        return {
+            'status': 'success',
+            data: {song}
+        }
+    }
 }
+
 
 export default SongsHandler
