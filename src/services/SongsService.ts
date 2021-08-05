@@ -37,6 +37,11 @@ class SongsService {
             updatedAt: new Date().toISOString()
         }
     }
+
+    deleteSong(songId: string) {
+        const songIndex = this.songs.findIndex(song => song.id === songId)
+        this.songs.splice(songIndex, 1)
+    }
 }
 
 export default SongsService

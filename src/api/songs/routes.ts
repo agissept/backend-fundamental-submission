@@ -22,11 +22,11 @@ const routes = (handler: SongsHandler): Array<ServerRoute> => [
         path: '/songs/{id}',
         handler: handler.putSongHandler,
     },
-    // {
-    //     method: 'DELETE',
-    //     path: '/songs/{id}',
-    //     handler: handler.deleteNoteByIdHandler,
-    // },
+    {
+        method: 'DELETE',
+        path: '/songs/{id}',
+        handler: handler.deleteSongByIdHandler,
+    },
 ]
 
 export default routes
