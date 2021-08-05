@@ -20,19 +20,27 @@ class SongsHandler {
 
     public async addSongHandler(request: Request, h: ResponseToolkit) {
         const {payload} = request
-        this.validator.validateNotePayload(payload as SongRequest)
 
-        const songId = this.service.addSong(payload as SongRequest)
+        try {
+            this.validator.validateNotePayload(payload as SongRequest)
 
-        const response = h.response({
-            status: 'success',
-            message: 'Song berhasil ditambahkan',
-            data: {
-                songId,
-            },
-        });
-        response.code(201);
-        return response;
+            const songId = this.service.addSong(payload as SongRequest)
+
+            const response = h.response({
+                status: 'success',
+                message: 'Song berhasil ditambahkan',
+                data: {
+                    songId,
+                },
+            });
+            response.code(201);
+            return response;
+        } catch (e) {
+           return  h.response({
+                'status': 'fail',
+                'message': `${e}: ${e.mesage}`
+            }).code(400)
+        }
     }
 
     public async getAllSongsHandler() {
