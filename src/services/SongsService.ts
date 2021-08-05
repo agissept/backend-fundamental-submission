@@ -27,6 +27,16 @@ class SongsService {
     getSongById(songId: string): DetailSong | undefined {
         return this.songs.find(song => song.id === songId)
     }
+
+    editSong(songId: string, payload: SongRequest) {
+        const songIndex = this.songs.findIndex(song => song.id === songId)
+
+        this.songs[songIndex] =  {
+            ...this.songs[songIndex],
+            ...payload,
+            updatedAt: new Date().toISOString()
+        }
+    }
 }
 
 export default SongsService

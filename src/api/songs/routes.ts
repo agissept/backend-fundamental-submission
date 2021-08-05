@@ -17,11 +17,11 @@ const routes = (handler: SongsHandler): Array<ServerRoute> => [
         path: '/songs/{id}',
         handler: handler.getSongByIdHandler,
     },
-    // {
-    //     method: 'PUT',
-    //     path: '/songs/{id}',
-    //     handler: handler.putNoteByIdHandler,
-    // },
+    {
+        method: 'PUT',
+        path: '/songs/{id}',
+        handler: handler.putSongHandler,
+    },
     // {
     //     method: 'DELETE',
     //     path: '/songs/{id}',

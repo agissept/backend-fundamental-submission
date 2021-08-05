@@ -13,6 +13,7 @@ class SongsHandler {
         this.addSongHandler = this.addSongHandler.bind(this)
         this.getAllSongsHandler = this.getAllSongsHandler.bind(this)
         this.getSongByIdHandler = this.getSongByIdHandler.bind(this)
+        this.putSongHandler = this.putSongHandler.bind(this)
     }
 
     public async addSongHandler(request: Request, h: ResponseToolkit) {
@@ -51,6 +52,15 @@ class SongsHandler {
         return {
             'status': 'success',
             data: {song}
+        }
+    }
+
+    public async putSongHandler(request: Request) {
+        const {id} = request.params
+       this.service.editSong(id, request.payload as SongRequest)
+        return {
+            'status': 'success',
+            'message': 'Song is updated'
         }
     }
 }
