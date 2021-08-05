@@ -45,6 +45,9 @@ class SongsService {
 
     deleteSong(songId: string) {
         const songIndex = this.songs.findIndex(song => song.id === songId)
+        if(songIndex < 0){
+            throw new NotFoundError('Song not deleted, id is not found')
+        }
         this.songs.splice(songIndex, 1)
     }
 }

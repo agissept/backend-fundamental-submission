@@ -102,13 +102,29 @@ class SongsHandler {
         }
     }
 
-    public async deleteSongByIdHandler(request: Request) {
+    public async deleteSongByIdHandler(request: Request, h: ResponseToolkit) {
         const {id} = request.params
 
-        this.service.deleteSong(id)
-        return {
-            'status': 'success',
-            'message': 'Song is deleted'
+        try {
+            this.service.deleteSong(id)
+            return {
+                'status': 'success',
+                'message': 'Song is deleted'
+            }
+        } catch (error) {
+            if (error instanceof ClientError) {
+                console.log(error)
+
+                return h.response({
+                    'status': 'fail',
+                    'message': `${error} : ${error.message}`
+                }).code(error.statusCode)
+            }
+
+            return h.response({
+                'status': 'fail',
+                'message': 'Server Error'
+            }).code(500)
         }
     }
 }
