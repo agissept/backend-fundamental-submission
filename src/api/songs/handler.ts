@@ -57,9 +57,15 @@ class SongsHandler {
         }
     }
 
-    public async getSongByIdHandler(request: Request) {
+    public async getSongByIdHandler(request: Request, h: ResponseToolkit) {
         const {id} = request.params
         const song = this.service.getSongById(id)
+        if(song === undefined){
+            return h.response({
+                'status': 'fail',
+                'message': 'Song not found'
+            }).code(404)
+        }
         return {
             'status': 'success',
             data: {song}
