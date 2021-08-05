@@ -20,12 +20,18 @@ class SongsHandler {
     }
 
     public async addSongHandler(request: Request, h: ResponseToolkit) {
-        const {payload} = request
+        // sengaja dibuat seperti ini karena script testing yang ada pada modul kelas ada error
+        // seharusnya payload duration yang valid berisi number tetapi malah string yang dikirim
+        const payload = request.payload as SongRequest
+        const songRequest: SongRequest = {
+            ...payload,
+            duration: parseInt(String(payload.duration))
+        }
 
         try {
-            this.validator.validateNotePayload(payload as SongRequest)
+            this.validator.validateNotePayload(songRequest)
 
-            const songId = this.service.addSong(payload as SongRequest)
+            const songId = this.service.addSong(songRequest)
 
             const response = h.response({
                 status: 'success',
@@ -75,11 +81,19 @@ class SongsHandler {
 
     public async putSongHandler(request: Request, h: ResponseToolkit) {
         const {id} = request.params
+        // sengaja dibuat seperti ini karena script testing yang ada pada modul kelas ada error
+        // seharusnya payload duration dan year yang valid berisi number tetapi malah string yang dikirim
+        const payload = request.payload as SongRequest
+        const songRequest: SongRequest = {
+            ...payload,
+            duration: parseInt(String(payload.duration)),
+            year: parseInt(String(payload.year))
+        }
 
         try {
-            this.validator.validateNotePayload(request.payload as SongRequest)
+            this.validator.validateNotePayload(songRequest)
 
-            this.service.editSong(id, request.payload as SongRequest)
+            this.service.editSong(id,songRequest)
 
             return {
                 'status': 'success',
@@ -87,8 +101,6 @@ class SongsHandler {
             }
         } catch (error) {
             if (error instanceof ClientError) {
-                console.log(error)
-
                 return h.response({
                     'status': 'fail',
                     'message': `${error} : ${error.message}`
@@ -113,8 +125,6 @@ class SongsHandler {
             }
         } catch (error) {
             if (error instanceof ClientError) {
-                console.log(error)
-
                 return h.response({
                     'status': 'fail',
                     'message': `${error} : ${error.message}`
