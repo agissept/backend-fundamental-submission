@@ -2,8 +2,11 @@ import Hapi from '@hapi/hapi'
 import songs from './api/songs'
 import SongsService from './services/SongsService'
 import SongsValidator from "./validator/songs";
+import dotenv from 'dotenv'
 
 const init = async () => {
+    dotenv.config()
+
     const server = Hapi.server({
         port: 5000,
         host: process.env.NODE_ENV !== 'production' ? 'localhost' : '0.0.0.0',
