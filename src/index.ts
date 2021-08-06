@@ -55,7 +55,7 @@ const init = async () => {
   })
 
   await server.start()
-  console.log(`Server berjalan pada ${server.info.uri}`)
+  console.log(`Server running on port ${server.info.uri}`)
 }
 
 init()

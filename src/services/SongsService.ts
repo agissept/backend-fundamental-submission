@@ -27,7 +27,7 @@ class SongsService {
       const result = await this.pool.query(query)
 
       if (!result.rowCount) {
-        throw new InvariantError('Catatan gagal ditambahkan')
+        throw new InvariantError('Song failed to add')
       }
 
       return result.rows[0].id
