@@ -1,8 +1,8 @@
-import { Request, ResponseToolkit } from '@hapi/hapi'
+import { Request } from '@hapi/hapi'
 import SongsService from '../../services/SongsService'
 import SongRequest from '../../model/request/SongRequest'
 import SongsValidator from '../../validator/songs'
-import ClientError from '../../exception/ClientError'
+import ResponseSuccess from '../../model/ResponseSuccess'
 
 class SongsHandler {
     private service
@@ -19,7 +19,7 @@ class SongsHandler {
       this.deleteSongByIdHandler = this.deleteSongByIdHandler.bind(this)
     }
 
-    public async addSongHandler (request: Request, h: ResponseToolkit) {
+    public async addSongHandler (request: Request): Promise<ResponseSuccess> {
       // sengaja dibuat seperti ini karena script testing yang ada pada modul kelas ada error
       // seharusnya payload duration yang valid berisi number tetapi malah string yang dikirim
       const payload = request.payload as SongRequest
@@ -28,62 +28,35 @@ class SongsHandler {
         duration: parseInt(String(payload.duration))
       }
 
-      try {
-        this.validator.validateNotePayload(songRequest)
+      this.validator.validateNotePayload(songRequest)
 
-        const songId = await this.service.addSong(songRequest)
+      const songId = await this.service.addSong(songRequest)
 
-        const response = h.response({
-          status: 'success',
-          message: 'Song berhasil ditambahkan',
-          data: {
-            songId
-          }
-        })
-        response.code(201)
-        return response
-      } catch (e) {
-        return h.response({
-          status: 'fail',
-          message: `${e}: ${e.mesage}`
-        }).code(400)
+      return {
+        data: {
+          songId: songId
+        },
+        message: 'Song successfully added',
+        statusCode: 201
       }
     }
 
     public async getAllSongsHandler () {
       const songs = await this.service.getAllSongs()
       return {
-        status: 'success',
         data: { songs }
       }
     }
 
-    public async getSongByIdHandler (request: Request, h: ResponseToolkit) {
+    public async getSongByIdHandler (request: Request): Promise<ResponseSuccess> {
       const { id } = request.params
-
-      try {
-        const song = await this.service.getSongById(id)
-        return {
-          status: 'success',
-          data: { song }
-        }
-      } catch (error) {
-        if (error instanceof ClientError) {
-          return h.response({
-            status: 'fail',
-            message: `${error} : ${error.message}`
-          }).code(error.statusCode)
-        }
-        console.error(error)
-
-        return h.response({
-          status: 'fail',
-          message: 'Server error'
-        }).code(500)
+      const song = await this.service.getSongById(id)
+      return {
+        data: { song }
       }
     }
 
-    public async putSongHandler (request: Request, h: ResponseToolkit) {
+    public async putSongHandler (request: Request): Promise<ResponseSuccess> {
       const { id } = request.params
       // sengaja dibuat seperti ini karena script testing yang ada pada modul kelas ada error
       // seharusnya payload duration dan year yang valid berisi number tetapi malah string yang dikirim
@@ -94,51 +67,21 @@ class SongsHandler {
         year: parseInt(String(payload.year))
       }
 
-      try {
-        this.validator.validateNotePayload(songRequest)
+      this.validator.validateNotePayload(songRequest)
 
-        await this.service.editSong(id, songRequest)
+      await this.service.editSong(id, songRequest)
 
-        return {
-          status: 'success',
-          message: 'Song updated'
-        }
-      } catch (error) {
-        if (error instanceof ClientError) {
-          return h.response({
-            status: 'fail',
-            message: `${error} : ${error.message}`
-          }).code(error.statusCode)
-        }
-
-        return h.response({
-          status: 'fail',
-          message: 'Server Error'
-        }).code(500)
+      return {
+        message: 'Song updated'
       }
     }
 
-    public async deleteSongByIdHandler (request: Request, h: ResponseToolkit) {
+    public async deleteSongByIdHandler (request: Request): Promise<ResponseSuccess> {
       const { id } = request.params
 
-      try {
-        await this.service.deleteSong(id)
-        return {
-          status: 'success',
-          message: 'Song is deleted'
-        }
-      } catch (error) {
-        if (error instanceof ClientError) {
-          return h.response({
-            status: 'fail',
-            message: `${error} : ${error.message}`
-          }).code(error.statusCode)
-        }
-
-        return h.response({
-          status: 'fail',
-          message: 'Server Error'
-        }).code(500)
+      await this.service.deleteSong(id)
+      return {
+        message: 'Song is deleted'
       }
     }
 }
