@@ -2,53 +2,88 @@ import {nanoid} from "nanoid";
 import SongRequest from "../model/request/SongRequest"
 import DetailSong from "../model/DetailSong";
 import NotFoundError from "../exception/NotFoundError";
+import {Pool, QueryConfig} from "pg";
+import InvariantError from "../exception/InvariantError";
+import Song from "../model/Song";
+import DetailSongDatabase from "../model/database/DetailSongDatabase";
 
 class SongsService {
-    private songs: Array<DetailSong> = []
+    private pool = new Pool()
 
-    addSong(payload: SongRequest) {
+    async addSong(payload: SongRequest): Promise<string> {
         const songId = nanoid(16)
 
         const song: DetailSong = {
-            ...payload,
             id: songId,
+            ...payload,
             insertedAt: new Date().toDateString(),
             updatedAt: new Date().toDateString()
         }
 
-        this.songs.push(song)
+        const query: QueryConfig = {
+            text: 'INSERT INTO songs VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id',
+            values: Object.values(song)
+        }
+        const result = await this.pool.query(query)
 
-        return songId
+        if (!result.rows[0].id) {
+            throw new InvariantError('Catatan gagal ditambahkan');
+        }
+
+        return result.rows[0].id;
     }
 
-    getAllSongs() {
-        return this.songs
+    async getAllSongs(): Promise<Array<Song>> {
+        const result = await this.pool.query('SELECT id, title, performer FROM songs')
+        return result.rows
     }
 
-    getSongById(songId: string): DetailSong | undefined {
-        return this.songs.find(song => song.id === songId)
+    async getSongById(songId: string): Promise<DetailSong> {
+        const query: QueryConfig = {
+            text: 'SELECT * FROM songs WHERE id = ($1)',
+            values: [songId]
+        }
+        const result = await this.pool.query(query)
+
+
+        if (!result.rows.length) {
+            throw new NotFoundError('Song not found')
+        }
+
+        const songFrommDB = result.rows[0] as DetailSongDatabase
+        return {
+            ...songFrommDB,
+            insertedAt: songFrommDB.inserted_at,
+            updatedAt: songFrommDB.updated_at
+        }
     }
 
-    editSong(songId: string, payload: SongRequest) {
-        const songIndex = this.songs.findIndex(song => song.id === songId)
+    async editSong(songId: string, payload: SongRequest): Promise<string> {
+        const query: QueryConfig = {
+            text: 'UPDATE songs SET title = $1, year = $2, performer = $3, genre = $4, duration = $5, updated_at = $6 WHERE id = $7 RETURNING id',
+            values: [...Object.values(payload), new Date().toISOString(), songId]
+        }
 
-        if(songIndex < 0){
+        const result = await this.pool.query(query)
+
+        if (!result.rows.length) {
             throw new NotFoundError('Song not updated, id is not found')
         }
 
-        this.songs[songIndex] =  {
-            ...this.songs[songIndex],
-            ...payload,
-            updatedAt: new Date().toISOString()
-        }
+        return result.rows[0].id;
     }
 
-    deleteSong(songId: string) {
-        const songIndex = this.songs.findIndex(song => song.id === songId)
-        if(songIndex < 0){
-            throw new NotFoundError('Song not deleted, id is not found')
+    async deleteSong(songId: string): Promise<void> {
+        const query: QueryConfig = {
+            text: 'DELETE FROM songs WHERE id = $1 RETURNING id',
+            values: [songId]
         }
-        this.songs.splice(songIndex, 1)
+
+        const result = await this.pool.query(query)
+
+        if (!result.rows.length) {
+            throw new NotFoundError('Song not updated, id is not found')
+        }
     }
 }
 

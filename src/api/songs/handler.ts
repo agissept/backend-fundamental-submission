@@ -31,7 +31,7 @@ class SongsHandler {
         try {
             this.validator.validateNotePayload(songRequest)
 
-            const songId = this.service.addSong(songRequest)
+            const songId = await this.service.addSong(songRequest)
 
             const response = h.response({
                 status: 'success',
@@ -43,7 +43,7 @@ class SongsHandler {
             response.code(201);
             return response;
         } catch (e) {
-           return  h.response({
+            return h.response({
                 'status': 'fail',
                 'message': `${e}: ${e.mesage}`
             }).code(400)
@@ -51,31 +51,35 @@ class SongsHandler {
     }
 
     public async getAllSongsHandler() {
-        const songs = this.service.getAllSongs()
+        const songs = await this.service.getAllSongs()
         return {
             'status': 'success',
-            data: {
-                songs: songs.map(song => ({
-                    id: song.id,
-                    title: song.title,
-                    performer: song.performer
-                }))
-            }
+            data: {songs}
         }
     }
 
     public async getSongByIdHandler(request: Request, h: ResponseToolkit) {
         const {id} = request.params
-        const song = this.service.getSongById(id)
-        if(song === undefined){
+
+        try {
+            const song = await this.service.getSongById(id)
+            return {
+                'status': 'success',
+                data: {song}
+            }
+        }catch (error) {
+            if (error instanceof ClientError) {
+                return h.response({
+                    'status': 'fail',
+                    'message': `${error} : ${error.message}`
+                }).code(error.statusCode)
+            }
+            console.error(error)
+
             return h.response({
                 'status': 'fail',
-                'message': 'Song not found'
-            }).code(404)
-        }
-        return {
-            'status': 'success',
-            data: {song}
+                'message': 'Server error'
+            }).code(500)
         }
     }
 
@@ -93,7 +97,7 @@ class SongsHandler {
         try {
             this.validator.validateNotePayload(songRequest)
 
-            this.service.editSong(id,songRequest)
+            await this.service.editSong(id, songRequest)
 
             return {
                 'status': 'success',
@@ -118,7 +122,7 @@ class SongsHandler {
         const {id} = request.params
 
         try {
-            this.service.deleteSong(id)
+            await this.service.deleteSong(id)
             return {
                 'status': 'success',
                 'message': 'Song is deleted'
