@@ -11,7 +11,7 @@ class SongsService {
     private pool = new Pool()
 
     async addSong (payload: SongRequest): Promise<string> {
-      const songId = nanoid(16)
+      const songId = `song-${nanoid(16)}`
 
       const song: DetailSong = {
         id: songId,
