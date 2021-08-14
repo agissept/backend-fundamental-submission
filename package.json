@@ -7,7 +7,7 @@
     "start-prod": "NODE_ENV=production NODE_PATH=./ ts-node src/index.ts",
     "start-dev": "nodemon",
     "lint": "eslint . --ext .ts",
-    "migrate": "ts-node node_modules/.bin/node-pg-migrate -j ts"
+    "migrate": "ts-node ./node_modules/node-pg-migrate/bin/node-pg-migrate -j ts"
   },
   "dependencies": {
     "@hapi/hapi": "^20.1.5",
