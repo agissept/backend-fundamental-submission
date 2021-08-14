@@ -4,6 +4,7 @@ import { Pool, QueryConfig } from 'pg'
 import InvariantError from '../exception/InvariantError'
 import NotFoundError from '../exception/NotFoundError'
 import AuthorizationError from '../exception/AuthorizationError'
+import ClientError from '../exception/ClientError'
 
 class PlaylistsService {
     private pool = new Pool()
@@ -45,7 +46,7 @@ class PlaylistsService {
       const result = await this.pool.query(query)
 
       if (!result.rowCount) {
-        throw new NotFoundError('Playlist tidak ditemukan')
+        throw new NotFoundError('Playlist tidak ditemukan, make sure the songId is available in playlists')
       }
     }
 
@@ -85,7 +86,7 @@ class PlaylistsService {
       const result = await this.pool.query(query)
 
       if (!result.rowCount) {
-        throw new NotFoundError('Playlist tidak ditemukan')
+        throw new ClientError('Song tidak ditemukan')
       }
     }
 
