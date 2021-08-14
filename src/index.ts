@@ -1,6 +1,7 @@
 import Hapi, { Request, ResponseToolkit } from '@hapi/hapi'
 import songs from './api/songs'
 import users from './api/users'
+import playlist from './api/playlists'
 import authentications from './api/authentications'
 import SongsService from './services/SongsService'
 import SongsValidator from './validator/songs'
@@ -12,6 +13,9 @@ import UsersValidator from './validator/users'
 import TokenManager from './tokenize/TokenManager'
 import AuthenticationsValidator from './validator/authentication'
 import AuthenticationsService from './services/AuthenticationsService'
+import Jwt from '@hapi/jwt'
+import PlaylistsService from './services/PlaylistsService'
+import PlaylistValidator from './validator/playlists'
 
 const init = async () => {
   dotenv.config()
@@ -53,6 +57,30 @@ const init = async () => {
     }).code(statusCode)
   })
 
+  // registrasi plugin eksternal
+  await server.register([
+    {
+      plugin: Jwt.plugin
+    }
+  ])
+
+  // mendefinisikan strategy autentikasi jwt
+  server.auth.strategy('musicapp_jwt', 'jwt', {
+    keys: process.env.ACCESS_TOKEN_KEY,
+    verify: {
+      aud: false,
+      iss: false,
+      sub: false,
+      maxAgeSec: process.env.ACCESS_TOKEN_AGE
+    },
+    validate: (artifacts: any) => ({
+      isValid: true,
+      credentials: {
+        id: artifacts.decoded.payload.id
+      }
+    })
+  })
+
   await server.register([{
     plugin: songs,
     options: {
@@ -74,6 +102,13 @@ const init = async () => {
       usersService: new UsersService(),
       tokenManager: new TokenManager(),
       validator: new AuthenticationsValidator()
+    }
+  },
+  {
+    plugin: playlist,
+    options: {
+      service: new PlaylistsService(),
+      validator: new PlaylistValidator()
     }
   }])
 
