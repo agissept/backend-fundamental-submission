@@ -23,7 +23,6 @@ class UsersHandler {
     const userId = await this.service.addUser(userPayload)
 
     return {
-      status: 'success',
       message: 'User successfully added',
       data: {
         userId
@@ -36,7 +35,6 @@ class UsersHandler {
     const { id } = request.params
     const user = await this.service.getUserById(id)
     return {
-      status: 'success',
       data: {
         user
       }
@@ -47,7 +45,6 @@ class UsersHandler {
     const { username = '' } = request.query
     const users = await this.service.getUsersByUsername(username)
     return {
-      status: 'success',
       data: {
         users
       }

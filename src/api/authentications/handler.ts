@@ -60,7 +60,6 @@ class AuthenticationsHandler {
 
       const accessToken = this.tokenManager.generateAccessToken({ id })
       return {
-        status: 'success',
         message: 'Access Token successfully renewed',
         data: {
           accessToken
@@ -78,7 +77,6 @@ class AuthenticationsHandler {
       await this.authenticationsService.deleteRefreshToken(refreshToken)
 
       return {
-        status: 'success',
         message: 'Refresh token is deleted'
       }
     }
