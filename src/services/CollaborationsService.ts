@@ -42,7 +42,7 @@ class CollaborationsService {
       }
       const result = await this.pool.query(query)
 
-      if (!result.rows.length) {
+      if (!result.rowCount) {
         throw new InvariantError('Fail verify collaboration')
       }
     }

@@ -105,7 +105,7 @@ class PlaylistsService {
         values: [playlistId]
       }
       const result = await this.pool.query(query)
-      if (!result.rows.length) {
+      if (!result.rowCount) {
         throw new NotFoundError('Playlist not found')
       }
       const playlist = result.rows[0]
