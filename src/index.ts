@@ -2,6 +2,7 @@ import Hapi, { Request, ResponseToolkit } from '@hapi/hapi'
 import songs from './api/songs'
 import users from './api/users'
 import playlist from './api/playlists'
+import collaboration from './api/collabolations'
 import authentications from './api/authentications'
 import SongsService from './services/SongsService'
 import SongsValidator from './validator/songs'
@@ -16,6 +17,8 @@ import AuthenticationsService from './services/AuthenticationsService'
 import Jwt from '@hapi/jwt'
 import PlaylistsService from './services/PlaylistsService'
 import PlaylistValidator from './validator/playlists'
+import CollaborationsService from './services/CollaborationsService'
+import CollaborationsValidator from './validator/collaboration'
 
 const init = async () => {
   dotenv.config()
@@ -29,6 +32,9 @@ const init = async () => {
       }
     }
   })
+
+  const collaborationService = new CollaborationsService()
+  const playlistService = new PlaylistsService(collaborationService)
 
   server.ext('onPreResponse', (request: Request, h: ResponseToolkit) => {
     const { response } = request
@@ -107,8 +113,16 @@ const init = async () => {
   {
     plugin: playlist,
     options: {
-      service: new PlaylistsService(),
+      service: playlistService,
       validator: new PlaylistValidator()
+    }
+  },
+  {
+    plugin: collaboration,
+    options: {
+      collaborationService: collaborationService,
+      playlistService: playlistService,
+      validator: new CollaborationsValidator()
     }
   }])
 
