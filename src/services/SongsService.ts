@@ -1,10 +1,10 @@
 import { nanoid } from 'nanoid'
 import SongPayload from '../model/song/SongPayload'
-import DetailSong from '../model/DetailSong'
+import DetailSongResponse from '../model/song/DetailSongResponse'
 import NotFoundError from '../exception/NotFoundError'
 import { Pool, QueryConfig } from 'pg'
 import InvariantError from '../exception/InvariantError'
-import Song from '../model/Song'
+import SongResponse from '../model/song/SongResponse'
 import DetailSongDatabase from '../model/database/DetailSongDatabase'
 
 class SongsService {
@@ -13,7 +13,7 @@ class SongsService {
     async addSong (payload: SongPayload): Promise<string> {
       const songId = `song-${nanoid(16)}`
 
-      const song: DetailSong = {
+      const song: DetailSongResponse = {
         id: songId,
         ...payload,
         insertedAt: new Date().toDateString(),
@@ -33,12 +33,12 @@ class SongsService {
       return result.rows[0].id
     }
 
-    async getAllSongs (): Promise<Array<Song>> {
+    async getAllSongs (): Promise<Array<SongResponse>> {
       const result = await this.pool.query('SELECT id, title, performer FROM songs')
       return result.rows
     }
 
-    async getSongById (songId: string): Promise<DetailSong> {
+    async getSongById (songId: string): Promise<DetailSongResponse> {
       const query: QueryConfig = {
         text: 'SELECT * FROM songs WHERE id = ($1)',
         values: [songId]

@@ -1,4 +1,4 @@
-interface DetailSong{
+interface DetailSongResponse {
     id: string,
     'title': string,
     'year': number,
@@ -9,4 +9,4 @@ interface DetailSong{
     'updatedAt': string
 }
 
-export default DetailSong
+export default DetailSongResponse

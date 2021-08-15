@@ -1,7 +1,7 @@
-interface Song{
+interface SongResponse {
     id: string,
     title: string,
     performer: string
 }
 
-export default Song
+export default SongResponse
