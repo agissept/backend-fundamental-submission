@@ -25,7 +25,7 @@ class PlaylistsService {
       const result = await this.pool.query(query)
 
       if (!result.rowCount) {
-        throw new InvariantError('Playlist gagal ditambahkan')
+        throw new InvariantError('Fail to add playlist')
       }
 
       return result.rows[0].id
@@ -55,7 +55,7 @@ class PlaylistsService {
       const result = await this.pool.query(query)
 
       if (!result.rowCount) {
-        throw new NotFoundError('Playlist tidak ditemukan, make sure the songId is available in playlists')
+        throw new NotFoundError('Playlist is not found, make sure the songId is available in playlists')
       }
     }
 
@@ -69,7 +69,7 @@ class PlaylistsService {
       const result = await this.pool.query(query)
 
       if (!result.rowCount) {
-        throw new InvariantError('Song gagal ditambahkan ke dalam playlist')
+        throw new InvariantError('Fail to added song into playlist')
       }
     }
 
@@ -95,7 +95,7 @@ class PlaylistsService {
       const result = await this.pool.query(query)
 
       if (!result.rowCount) {
-        throw new ClientError('Song tidak ditemukan')
+        throw new ClientError('Song not found')
       }
     }
 
@@ -106,11 +106,11 @@ class PlaylistsService {
       }
       const result = await this.pool.query(query)
       if (!result.rows.length) {
-        throw new NotFoundError('Playlist tidak ditemukan')
+        throw new NotFoundError('Playlist not found')
       }
       const playlist = result.rows[0]
       if (playlist.owner !== userId) {
-        throw new AuthorizationError('Anda tidak berhak mengakses resource ini')
+        throw new AuthorizationError('You not have permission to access this resource')
       }
     }
 

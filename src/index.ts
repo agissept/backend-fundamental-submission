@@ -63,14 +63,12 @@ const init = async () => {
     }).code(statusCode)
   })
 
-  // registrasi plugin eksternal
   await server.register([
     {
       plugin: Jwt.plugin
     }
   ])
 
-  // mendefinisikan strategy autentikasi jwt
   server.auth.strategy('musicapp_jwt', 'jwt', {
     keys: process.env.ACCESS_TOKEN_KEY,
     verify: {

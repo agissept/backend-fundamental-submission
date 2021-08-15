@@ -24,7 +24,7 @@ class UsersHandler {
 
     return {
       status: 'success',
-      message: 'User berhasil ditambahkan',
+      message: 'User successfully added',
       data: {
         userId
       },
