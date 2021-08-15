@@ -62,7 +62,7 @@ class PlaylistsHandler {
       const { id: playlistId } = params
       const { id: owner } = auth.credentials
 
-      await this.service.verifyPlaylistOwner(playlistId, owner as string)
+      await this.service.verifyPlaylistAccess(playlistId, owner as string)
 
       const { songId } = payload as PlaylistSongPayload
 
@@ -78,7 +78,7 @@ class PlaylistsHandler {
       const { id: playlistId } = params
       const { id: owner } = auth.credentials
 
-      await this.service.verifyPlaylistOwner(playlistId, owner as string)
+      await this.service.verifyPlaylistAccess(playlistId, owner as string)
 
       const songs = await this.service.getSongsFromPlaylist(playlistId)
 
@@ -95,7 +95,7 @@ class PlaylistsHandler {
       const { id: playlistId } = params
       const { id: owner } = auth.credentials
 
-      await this.service.verifyPlaylistOwner(playlistId, owner as string)
+      await this.service.verifyPlaylistAccess(playlistId, owner as string)
       await this.service.deleteSongFromPlaylist(songId, playlistId)
       return {
         message: 'Song is deleted from playlist'

@@ -5,9 +5,15 @@ import InvariantError from '../exception/InvariantError'
 import NotFoundError from '../exception/NotFoundError'
 import AuthorizationError from '../exception/AuthorizationError'
 import ClientError from '../exception/ClientError'
+import CollaborationsService from './CollaborationsService'
 
 class PlaylistsService {
     private pool = new Pool()
+    private collaborationService
+
+    constructor (collaborationService: CollaborationsService) {
+      this.collaborationService = collaborationService
+    }
 
     async addPlaylist ({ name }: PlaylistPayload, owner: string) {
       const id = `playlist-${nanoid(16)}`
@@ -27,10 +33,13 @@ class PlaylistsService {
 
     async getPlaylists (owner: string) {
       const query: QueryConfig = {
-        text: `SELECT p.id, p.name, u.username 
+        text: `SELECT p.id, p.name, u.username
                FROM playlists as p
-               JOIN users as u ON u.id = p.owner
-               WHERE p.owner = $1`,
+               LEFT JOIN collaborations AS c ON c.playlist_id = p.id
+               JOIN users AS u ON u.id = p.owner
+               WHERE p.owner = $1 OR c.user_id = $1
+               GROUP BY p.id, u.username
+             `,
         values: [owner]
       }
       const result = await this.pool.query(query)
@@ -102,6 +111,21 @@ class PlaylistsService {
       const playlist = result.rows[0]
       if (playlist.owner !== userId) {
         throw new AuthorizationError('Anda tidak berhak mengakses resource ini')
+      }
+    }
+
+    async verifyPlaylistAccess (playlistId: string, userId: string) {
+      try {
+        await this.verifyPlaylistOwner(playlistId, userId)
+      } catch (error) {
+        if (error instanceof NotFoundError) {
+          throw error
+        }
+        try {
+          await this.collaborationService.verifyCollaborator(playlistId, userId)
+        } catch (er) {
+          throw error
+        }
       }
     }
 }
