@@ -6,12 +6,12 @@ import AuthenticationsHandler from './handler'
 export default {
   name: 'authentications',
   version: '1.0.0',
-  register: async (server: Server, {
+  async register (server: Server, {
     authenticationsService,
     usersService,
     tokenManager,
     validator
-  }: Options) => {
+  }: Options) {
     const authenticationsHandler = new AuthenticationsHandler(
       authenticationsService,
       usersService,

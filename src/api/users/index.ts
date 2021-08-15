@@ -6,7 +6,7 @@ import UsersHandler from './handler'
 export default {
   name: 'users',
   version: '1.0.0',
-  register: async (server: Server, { service, validator }: Options) => {
+  async register (server: Server, { service, validator }: Options) {
     const usersHandler = new UsersHandler(service, validator)
     server.route(routes(usersHandler))
   }

@@ -6,7 +6,7 @@ import PlaylistsHandler from './handler'
 export default {
   name: 'playlists',
   version: '1.0.0',
-  register: async (server: Server, { service, validator } : Options) => {
+  async register (server: Server, { service, validator }: Options) {
     const playlistsHandler = new PlaylistsHandler(service, validator)
     server.route(routes(playlistsHandler))
   }
