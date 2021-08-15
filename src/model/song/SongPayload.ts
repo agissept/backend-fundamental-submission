@@ -1,4 +1,4 @@
-interface SongRequest{
+interface SongPayload {
     'title': string,
     'year': number,
     'performer': string,
@@ -6,4 +6,4 @@ interface SongRequest{
     'duration': number
 }
 
-export default SongRequest
+export default SongPayload

@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid'
-import SongRequest from '../model/request/SongRequest'
+import SongPayload from '../model/song/SongPayload'
 import DetailSong from '../model/DetailSong'
 import NotFoundError from '../exception/NotFoundError'
 import { Pool, QueryConfig } from 'pg'
@@ -10,7 +10,7 @@ import DetailSongDatabase from '../model/database/DetailSongDatabase'
 class SongsService {
     private pool = new Pool()
 
-    async addSong (payload: SongRequest): Promise<string> {
+    async addSong (payload: SongPayload): Promise<string> {
       const songId = `song-${nanoid(16)}`
 
       const song: DetailSong = {
@@ -57,7 +57,7 @@ class SongsService {
       }
     }
 
-    async editSong (songId: string, payload: SongRequest): Promise<string> {
+    async editSong (songId: string, payload: SongPayload): Promise<string> {
       const query: QueryConfig = {
         text: 'UPDATE songs SET title = $1, year = $2, performer = $3, genre = $4, duration = $5, updated_at = $6 WHERE id = $7 RETURNING id',
         values: [...Object.values(payload), new Date().toISOString(), songId]
