@@ -6,9 +6,9 @@ import PlaylistsService from '../../services/PlaylistsService'
 import autoBind from 'auto-bind'
 
 class CollaborationsHandler {
-    private collaborationService;
-    private playlistService;
-    private validator;
+    private collaborationService: CollaborationsService
+    private playlistService: PlaylistsService
+    private validator: CollaborationsValidator
 
     constructor (
       collaborationService: CollaborationsService,

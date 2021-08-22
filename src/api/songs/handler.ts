@@ -6,8 +6,8 @@ import ResponseSuccess from '../../model/ResponseSuccess'
 import autoBind from 'auto-bind'
 
 class SongsHandler {
-    private service
-    private validator;
+    private service: SongsService
+    private validator: SongsValidator
 
     constructor (service: SongsService, validator: SongsValidator) {
       this.service = service

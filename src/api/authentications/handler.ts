@@ -8,10 +8,10 @@ import AuthenticationsValidator from '../../validator/authentication'
 import autoBind from 'auto-bind'
 
 class AuthenticationsHandler {
-    private authenticationsService
-    private usersService
-    private tokenManager
-    private validator
+    private authenticationsService: AuthenticationsService
+    private usersService: UsersService
+    private tokenManager: TokenManager
+    private validator: AuthenticationsValidator
 
     constructor (
       authenticationsService: AuthenticationsService,

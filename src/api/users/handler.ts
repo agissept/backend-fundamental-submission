@@ -5,8 +5,8 @@ import UsersValidator from '../../validator/users'
 import autoBind from 'auto-bind'
 
 class UsersHandler {
-  private service: any;
-  private validator: any;
+  private service: UsersService
+  private validator: UsersValidator
 
   constructor (service: UsersService, validator: UsersValidator) {
     this.service = service

@@ -6,8 +6,8 @@ import PlaylistSongPayload from '../../model/playlist/PlaylistSongPayload'
 import autoBind from 'auto-bind'
 
 class PlaylistsHandler {
-    private service
-    private validator
+    private service: PlaylistsService
+    private validator: PlaylistValidator
 
     constructor (service: PlaylistsService, validator: PlaylistValidator) {
       this.service = service
