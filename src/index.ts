@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import Hapi, { Request, ResponseToolkit } from '@hapi/hapi'
 import songs from './api/songs'
 import users from './api/users'
@@ -6,7 +7,6 @@ import collaboration from './api/collabolations'
 import authentications from './api/authentications'
 import SongsService from './services/SongsService'
 import SongsValidator from './validator/songs'
-import dotenv from 'dotenv'
 import ClientError from './exception/ClientError'
 import ResponseSuccess from './model/ResponseSuccess'
 import UsersService from './services/UsersService'
@@ -21,8 +21,6 @@ import CollaborationsService from './services/CollaborationsService'
 import CollaborationsValidator from './validator/collaboration'
 
 const init = async () => {
-  dotenv.config()
-
   const server = Hapi.server({
     port: 5000,
     host: process.env.NODE_ENV !== 'production' ? 'localhost' : '0.0.0.0',
