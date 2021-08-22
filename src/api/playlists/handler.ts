@@ -22,7 +22,7 @@ class PlaylistsHandler {
 
       const { id: owner } = auth.credentials
 
-      const songId = await this.service.addPlaylist(playlistPayload, owner as string)
+      const songId = await this.service.addPlaylist(playlistPayload.name, owner as string)
 
       return {
         data: {

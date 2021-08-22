@@ -16,13 +16,13 @@ class SongsHandler {
       autoBind(this)
     }
 
-    public async addSongHandler (request: Request): Promise<ResponseSuccess> {
+    public async addSongHandler ({ payload }: Request): Promise<ResponseSuccess> {
       // sengaja dibuat seperti ini karena script testing yang ada pada modul kelas ada error
       // seharusnya payload duration yang valid berisi number tetapi malah string yang dikirim
-      const payload = request.payload as SongPayload
-      const songPayload: SongPayload = {
-        ...payload,
-        duration: parseInt(String(payload.duration))
+      let songPayload = payload as SongPayload
+      songPayload = {
+        ...songPayload,
+        duration: parseInt(String(songPayload.duration))
       }
 
       this.validator.validateNotePayload(songPayload)
@@ -40,43 +40,42 @@ class SongsHandler {
 
     public async getAllSongsHandler () {
       const songs = await this.service.getAllSongs()
+
       return {
         data: { songs }
       }
     }
 
-    public async getSongByIdHandler (request: Request): Promise<ResponseSuccess> {
-      const { id } = request.params
-      const song = await this.service.getSongById(id)
+    public async getSongByIdHandler ({ params }: Request): Promise<ResponseSuccess> {
+      const song = await this.service.getSongById(params.id)
+
       return {
         data: { song }
       }
     }
 
-    public async putSongHandler (request: Request): Promise<ResponseSuccess> {
-      const { id } = request.params
+    public async putSongHandler ({ payload, params }: Request): Promise<ResponseSuccess> {
       // sengaja dibuat seperti ini karena script testing yang ada pada modul kelas ada error
       // seharusnya payload duration dan year yang valid berisi number tetapi malah string yang dikirim
-      const payload = request.payload as SongPayload
-      const songPayload: SongPayload = {
-        ...payload,
-        duration: parseInt(String(payload.duration)),
-        year: parseInt(String(payload.year))
+      let songPayload = payload as SongPayload
+      songPayload = {
+        ...songPayload,
+        duration: parseInt(String(songPayload.duration)),
+        year: parseInt(String(songPayload.year))
       }
 
       this.validator.validateNotePayload(songPayload)
 
-      await this.service.editSong(id, songPayload)
+      await this.service.editSong(params.id, songPayload)
 
       return {
         message: 'Song updated'
       }
     }
 
-    public async deleteSongByIdHandler (request: Request): Promise<ResponseSuccess> {
-      const { id } = request.params
+    public async deleteSongByIdHandler ({ params }: Request): Promise<ResponseSuccess> {
+      await this.service.deleteSong(params.id)
 
-      await this.service.deleteSong(id)
       return {
         message: 'Song is deleted'
       }

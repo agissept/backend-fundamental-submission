@@ -1,4 +1,3 @@
-import PlaylistPayload from '../model/playlist/PlaylistPayload'
 import { nanoid } from 'nanoid'
 import { Pool, QueryConfig } from 'pg'
 import InvariantError from '../exception/InvariantError'
@@ -15,7 +14,7 @@ class PlaylistsService {
       this.collaborationService = collaborationService
     }
 
-    async addPlaylist ({ name }: PlaylistPayload, owner: string) {
+    async addPlaylist (name: string, owner: string) {
       const id = `playlist-${nanoid(16)}`
       const query = {
         text: 'INSERT INTO playlists VALUES($1, $2, $3) RETURNING id',

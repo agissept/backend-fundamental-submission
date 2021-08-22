@@ -30,9 +30,8 @@ class UsersHandler {
     }
   }
 
-  async getUserByIdHandler (request: Request) {
-    const { id } = request.params
-    const user = await this.service.getUserById(id)
+  async getUserByIdHandler ({ params }: Request) {
+    const user = await this.service.getUserById(params.id)
     return {
       data: {
         user
@@ -40,8 +39,8 @@ class UsersHandler {
     }
   }
 
-  async getUsersByUsernameHandler (request: Request) {
-    const { username = '' } = request.query
+  async getUsersByUsernameHandler ({ query }: Request) {
+    const { username = '' } = query
     const users = await this.service.getUsersByUsername(username)
     return {
       data: {
