@@ -1,6 +1,6 @@
-import AuthenticationsService from '../../services/AuthenticationsService'
+import AuthenticationsService from '../../services/postgre/AuthenticationsService'
 import AuthenticationsValidator from '../../validator/authentication'
-import UsersService from '../../services/UsersService'
+import UsersService from '../../services/postgre/UsersService'
 import TokenManager from '../../tokenize/TokenManager'
 
 interface Options{

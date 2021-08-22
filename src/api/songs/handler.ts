@@ -1,5 +1,5 @@
 import { Request } from '@hapi/hapi'
-import SongsService from '../../services/SongsService'
+import SongsService from '../../services/postgre/SongsService'
 import SongPayload from '../../model/song/SongPayload'
 import SongsValidator from '../../validator/songs'
 import ResponseSuccess from '../../model/ResponseSuccess'

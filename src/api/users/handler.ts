@@ -1,4 +1,4 @@
-import UsersService from '../../services/UsersService'
+import UsersService from '../../services/postgre/UsersService'
 import { Request } from '@hapi/hapi'
 import UserPayload from '../../model/user/UserPayload'
 import UsersValidator from '../../validator/users'

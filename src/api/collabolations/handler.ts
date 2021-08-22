@@ -1,8 +1,8 @@
 import { Request } from '@hapi/hapi'
-import CollaborationsService from '../../services/CollaborationsService'
+import CollaborationsService from '../../services/postgre/CollaborationsService'
 import CollaborationsValidator from '../../validator/collaboration'
 import CollaborationPayload from '../../model/collaboration/CollaborationPayload'
-import PlaylistsService from '../../services/PlaylistsService'
+import PlaylistsService from '../../services/postgre/PlaylistsService'
 import autoBind from 'auto-bind'
 
 class CollaborationsHandler {

@@ -1,4 +1,4 @@
-import PlaylistsService from '../../services/PlaylistsService'
+import PlaylistsService from '../../services/postgre/PlaylistsService'
 import PlaylistValidator from '../../validator/playlists'
 
 interface Options{

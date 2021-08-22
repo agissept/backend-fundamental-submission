@@ -1,7 +1,7 @@
 import { Pool } from 'pg'
 import { nanoid } from 'nanoid'
-import CollaborationPayload from '../model/collaboration/CollaborationPayload'
-import InvariantError from '../exception/InvariantError'
+import CollaborationPayload from '../../model/collaboration/CollaborationPayload'
+import InvariantError from '../../exception/InvariantError'
 
 class CollaborationsService {
     private pool = new Pool()

@@ -1,4 +1,4 @@
-import SongsService from '../../services/SongsService'
+import SongsService from '../../services/postgre/SongsService'
 import SongsValidator from '../../validator/songs'
 
 interface Options{

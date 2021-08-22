@@ -1,9 +1,9 @@
 import { nanoid } from 'nanoid'
 import { Pool, QueryConfig } from 'pg'
-import InvariantError from '../exception/InvariantError'
-import NotFoundError from '../exception/NotFoundError'
-import AuthorizationError from '../exception/AuthorizationError'
-import ClientError from '../exception/ClientError'
+import InvariantError from '../../exception/InvariantError'
+import NotFoundError from '../../exception/NotFoundError'
+import AuthorizationError from '../../exception/AuthorizationError'
+import ClientError from '../../exception/ClientError'
 import CollaborationsService from './CollaborationsService'
 
 class PlaylistsService {

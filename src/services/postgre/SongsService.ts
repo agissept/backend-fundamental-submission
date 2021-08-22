@@ -1,11 +1,11 @@
 import { nanoid } from 'nanoid'
-import SongPayload from '../model/song/SongPayload'
-import DetailSongResponse from '../model/song/DetailSongResponse'
-import NotFoundError from '../exception/NotFoundError'
+import SongPayload from '../../model/song/SongPayload'
+import DetailSongResponse from '../../model/song/DetailSongResponse'
+import NotFoundError from '../../exception/NotFoundError'
 import { Pool, QueryConfig } from 'pg'
-import InvariantError from '../exception/InvariantError'
-import SongResponse from '../model/song/SongResponse'
-import DetailSongDatabase from '../model/database/DetailSongDatabase'
+import InvariantError from '../../exception/InvariantError'
+import SongResponse from '../../model/song/SongResponse'
+import DetailSongDatabase from '../../model/database/DetailSongDatabase'
 
 class SongsService {
     private pool = new Pool()

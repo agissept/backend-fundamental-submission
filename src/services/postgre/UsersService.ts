@@ -1,11 +1,11 @@
 import { nanoid } from 'nanoid'
-import NotFoundError from '../exception/NotFoundError'
+import NotFoundError from '../../exception/NotFoundError'
 import { Pool } from 'pg'
-import InvariantError from '../exception/InvariantError'
-import UserPayload from '../model/user/UserPayload'
+import InvariantError from '../../exception/InvariantError'
+import UserPayload from '../../model/user/UserPayload'
 import * as bcrypt from 'bcrypt'
-import AuthenticationError from '../exception/AuthenticationError'
-import LoginPayload from '../model/auth/LoginPayload'
+import AuthenticationError from '../../exception/AuthenticationError'
+import LoginPayload from '../../model/auth/LoginPayload'
 
 class UsersService {
     private pool = new Pool()

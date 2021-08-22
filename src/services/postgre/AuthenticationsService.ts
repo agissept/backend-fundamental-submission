@@ -1,5 +1,5 @@
 import { Pool } from 'pg'
-import InvariantError from '../exception/InvariantError'
+import InvariantError from '../../exception/InvariantError'
 
 class AuthenticationsService {
     private pool = new Pool()

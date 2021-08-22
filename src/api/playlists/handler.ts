@@ -1,6 +1,6 @@
 import { Request } from '@hapi/hapi'
 import PlaylistPayload from '../../model/playlist/PlaylistPayload'
-import PlaylistsService from '../../services/PlaylistsService'
+import PlaylistsService from '../../services/postgre/PlaylistsService'
 import PlaylistValidator from '../../validator/playlists'
 import PlaylistSongPayload from '../../model/playlist/PlaylistSongPayload'
 import autoBind from 'auto-bind'

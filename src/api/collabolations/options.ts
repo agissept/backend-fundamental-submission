@@ -1,6 +1,6 @@
-import CollaborationsService from '../../services/CollaborationsService'
+import CollaborationsService from '../../services/postgre/CollaborationsService'
 import CollaborationsValidator from '../../validator/collaboration'
-import PlaylistsService from '../../services/PlaylistsService'
+import PlaylistsService from '../../services/postgre/PlaylistsService'
 
 interface Options{
     collaborationService: CollaborationsService,
