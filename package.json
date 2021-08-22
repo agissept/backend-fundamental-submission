@@ -17,6 +17,7 @@
     "@types/hapi__jwt": "^2.0.1",
     "@types/joi": "^17.2.3",
     "@types/pg": "^8.6.1",
+    "auto-bind": "^4.0.0",
     "bcrypt": "^5.0.1",
     "dotenv": "^10.0.0",
     "joi": "^17.4.2",

@@ -5,6 +5,7 @@ import UsersService from '../../services/UsersService'
 import LoginPayload from '../../model/auth/LoginPayload'
 import RefreshTokenPayload from '../../model/auth/RefreshTokenPayload'
 import AuthenticationsValidator from '../../validator/authentication'
+import autoBind from 'auto-bind'
 
 class AuthenticationsHandler {
     private authenticationsService
@@ -22,9 +23,7 @@ class AuthenticationsHandler {
       this.tokenManager = tokenManager
       this.validator = validator
 
-      this.postAuthenticationHandler = this.postAuthenticationHandler.bind(this)
-      this.putAuthenticationHandler = this.putAuthenticationHandler.bind(this)
-      this.deleteAuthenticationHandler = this.deleteAuthenticationHandler.bind(this)
+      autoBind(this)
     }
 
     async postAuthenticationHandler ({ payload }: Request) {

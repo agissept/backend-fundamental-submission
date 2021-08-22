@@ -3,6 +3,7 @@ import SongsService from '../../services/SongsService'
 import SongPayload from '../../model/song/SongPayload'
 import SongsValidator from '../../validator/songs'
 import ResponseSuccess from '../../model/ResponseSuccess'
+import autoBind from 'auto-bind'
 
 class SongsHandler {
     private service
@@ -12,11 +13,7 @@ class SongsHandler {
       this.service = service
       this.validator = validator
 
-      this.addSongHandler = this.addSongHandler.bind(this)
-      this.getAllSongsHandler = this.getAllSongsHandler.bind(this)
-      this.getSongByIdHandler = this.getSongByIdHandler.bind(this)
-      this.putSongHandler = this.putSongHandler.bind(this)
-      this.deleteSongByIdHandler = this.deleteSongByIdHandler.bind(this)
+      autoBind(this)
     }
 
     public async addSongHandler (request: Request): Promise<ResponseSuccess> {

@@ -2,6 +2,7 @@ import UsersService from '../../services/UsersService'
 import { Request } from '@hapi/hapi'
 import UserPayload from '../../model/user/UserPayload'
 import UsersValidator from '../../validator/users'
+import autoBind from 'auto-bind'
 
 class UsersHandler {
   private service: any;
@@ -11,9 +12,7 @@ class UsersHandler {
     this.service = service
     this.validator = validator
 
-    this.postUserHandler = this.postUserHandler.bind(this)
-    this.getUserByIdHandler = this.getUserByIdHandler.bind(this)
-    this.getUsersByUsernameHandler = this.getUsersByUsernameHandler.bind(this)
+    autoBind(this)
   }
 
   async postUserHandler ({ payload }: Request) {

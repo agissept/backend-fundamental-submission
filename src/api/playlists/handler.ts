@@ -3,6 +3,7 @@ import PlaylistPayload from '../../model/playlist/PlaylistPayload'
 import PlaylistsService from '../../services/PlaylistsService'
 import PlaylistValidator from '../../validator/playlists'
 import PlaylistSongPayload from '../../model/playlist/PlaylistSongPayload'
+import autoBind from 'auto-bind'
 
 class PlaylistsHandler {
     private service
@@ -12,12 +13,7 @@ class PlaylistsHandler {
       this.service = service
       this.validator = validator
 
-      this.addPlaylistHandler = this.addPlaylistHandler.bind(this)
-      this.getAllPlaylistHandler = this.getAllPlaylistHandler.bind(this)
-      this.deletePlaylistHandler = this.deletePlaylistHandler.bind(this)
-      this.addSongToPlaylistHandler = this.addSongToPlaylistHandler.bind(this)
-      this.getSongsFromPlaylistHandler = this.getSongsFromPlaylistHandler.bind(this)
-      this.deleteSongsFromPlaylistHandler = this.deleteSongsFromPlaylistHandler.bind(this)
+      autoBind(this)
     }
 
     async addPlaylistHandler ({ payload, auth }: Request) {

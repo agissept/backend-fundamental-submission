@@ -3,6 +3,7 @@ import CollaborationsService from '../../services/CollaborationsService'
 import CollaborationsValidator from '../../validator/collaboration'
 import CollaborationPayload from '../../model/collaboration/CollaborationPayload'
 import PlaylistsService from '../../services/PlaylistsService'
+import autoBind from 'auto-bind'
 
 class CollaborationsHandler {
     private collaborationService;
@@ -17,8 +18,7 @@ class CollaborationsHandler {
       this.playlistService = playlistService
       this.validator = validator
 
-      this.postCollaborationHandler = this.postCollaborationHandler.bind(this)
-      this.deleteCollaborationHandler = this.deleteCollaborationHandler.bind(this)
+      autoBind(this)
     }
 
     async postCollaborationHandler ({ payload, auth }: Request) {
