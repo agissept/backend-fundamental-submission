@@ -5,6 +5,7 @@ import users from './api/users'
 import playlist from './api/playlists'
 import collaboration from './api/collabolations'
 import authentications from './api/authentications'
+import _export from './api/exports'
 import SongsService from './services/postgre/SongsService'
 import SongsValidator from './validator/songs'
 import ClientError from './exception/ClientError'
@@ -19,6 +20,8 @@ import PlaylistsService from './services/postgre/PlaylistsService'
 import PlaylistValidator from './validator/playlists'
 import CollaborationsService from './services/postgre/CollaborationsService'
 import CollaborationsValidator from './validator/collaboration'
+import ProducerService from './services/rabbitmq/ProducerService'
+import ExportsValidator from './validator/exports'
 
 const init = async () => {
   const server = Hapi.server({
@@ -120,7 +123,15 @@ const init = async () => {
       playlistService: playlistService,
       validator: new CollaborationsValidator()
     }
-  }])
+  }, {
+    plugin: _export,
+    options: {
+      producerService: new ProducerService(),
+      playlistService: playlistService,
+      validator: new ExportsValidator()
+    }
+  }
+  ])
 
   await server.start()
   console.log(`Server running on port ${server.info.uri}`)
