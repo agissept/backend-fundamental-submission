@@ -6,6 +6,7 @@ import playlist from './api/playlists'
 import collaboration from './api/collabolations'
 import authentications from './api/authentications'
 import _export from './api/exports'
+import uploads from './api/uploads'
 import SongsService from './services/postgre/SongsService'
 import SongsValidator from './validator/songs'
 import ClientError from './exception/ClientError'
@@ -16,12 +17,15 @@ import TokenManager from './tokenize/TokenManager'
 import AuthenticationsValidator from './validator/authentication'
 import AuthenticationsService from './services/postgre/AuthenticationsService'
 import Jwt from '@hapi/jwt'
+import inert from '@hapi/inert'
 import PlaylistsService from './services/postgre/PlaylistsService'
 import PlaylistValidator from './validator/playlists'
 import CollaborationsService from './services/postgre/CollaborationsService'
 import CollaborationsValidator from './validator/collaboration'
 import ProducerService from './services/rabbitmq/ProducerService'
 import ExportsValidator from './validator/exports'
+import UploadsValidator from './validator/uploads'
+import StorageService from './services/S3/StorageService'
 
 const init = async () => {
   const server = Hapi.server({
@@ -67,6 +71,9 @@ const init = async () => {
   await server.register([
     {
       plugin: Jwt.plugin
+    },
+    {
+      plugin: inert
     }
   ])
 
@@ -129,6 +136,13 @@ const init = async () => {
       producerService: new ProducerService(),
       playlistService: playlistService,
       validator: new ExportsValidator()
+    }
+  },
+  {
+    plugin: uploads,
+    options: {
+      service: new StorageService(),
+      validator: new UploadsValidator()
     }
   }
   ])

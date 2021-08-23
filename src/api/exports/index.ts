@@ -8,8 +8,6 @@ export default {
   version: '1.0.0',
   register: async (server: Server, { producerService, playlistService, validator }: Options) => {
     const exportsHandler = new ExportsHandler(producerService, playlistService, validator)
-    console.log(validator.validateExportPlaylistPayload)
-
     server.route(routes(exportsHandler))
   }
 }
