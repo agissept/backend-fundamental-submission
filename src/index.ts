@@ -26,6 +26,7 @@ import ProducerService from './services/rabbitmq/ProducerService'
 import ExportsValidator from './validator/exports'
 import UploadsValidator from './validator/uploads'
 import StorageService from './services/S3/StorageService'
+import CacheService from './services/redis/CacheService'
 
 const init = async () => {
   const server = Hapi.server({
@@ -39,7 +40,7 @@ const init = async () => {
   })
 
   const collaborationService = new CollaborationsService()
-  const playlistService = new PlaylistsService(collaborationService)
+  const playlistService = new PlaylistsService(collaborationService, new CacheService())
 
   server.ext('onPreResponse', (request: Request, h: ResponseToolkit) => {
     const { response } = request

@@ -5,12 +5,13 @@ import NotFoundError from '../../exception/NotFoundError'
 import AuthorizationError from '../../exception/AuthorizationError'
 import ClientError from '../../exception/ClientError'
 import CollaborationsService from './CollaborationsService'
+import CacheService from '../redis/CacheService'
 
 class PlaylistsService {
     private pool = new Pool()
     private collaborationService
 
-    constructor (collaborationService: CollaborationsService) {
+    constructor (collaborationService: CollaborationsService, cacheService: CacheService) {
       this.collaborationService = collaborationService
     }
 
