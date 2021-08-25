@@ -16,7 +16,7 @@ class CacheService {
       })
     }
 
-    get (key: string) {
+    get (key: string): Promise<string> {
       return new Promise((resolve, reject) => {
         this.client.get(key, (error, reply) => {
           if (error) {

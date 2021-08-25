@@ -48,7 +48,7 @@ class PlaylistsHandler {
 
       await this.service.verifyPlaylistOwner(id, owner as string)
 
-      await this.service.deletePlaylist(id)
+      await this.service.deletePlaylist(id, owner as string)
       return {
         message: 'Playlist is deleted'
       }
