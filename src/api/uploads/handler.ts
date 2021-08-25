@@ -2,6 +2,7 @@ import { Request } from '@hapi/hapi'
 import autoBind from 'auto-bind'
 import StorageService from '../../services/S3/StorageService'
 import UploadsValidator from '../../validator/uploads'
+import UploadPayload from '../../model/upload/UploadPayload'
 
 class UploadsHandler {
     private service: StorageService
@@ -15,7 +16,7 @@ class UploadsHandler {
     }
 
     async postUploadImageHandler (request: Request) {
-      const { data } = request.payload as any
+      const { data } = request.payload as UploadPayload
       this.validator.validateImageHeaders(data.hapi.headers)
 
       const pictureUrl = await this.service.writeFile(data, data.hapi)
